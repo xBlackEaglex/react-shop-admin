@@ -1,16 +1,29 @@
 import { useRef } from 'react';
+import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
+import { useAuth } from '@hooks/useAuth';
 
 export default function LoginPage() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
+    const auth = useAuth();
+    const router = useRouter();
 
     const submitHandler = (event) => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        console.log(email, password);
+        auth.signIn(email, password).then(
+            () => {
+                router.push('/dashboard');
+            },
+            (reason) => {
+                console.log('Login Failed');
+                console.log(reason);
+                auth.setError('Invalid Username or Password');
+            }
+        );
     };
 
     return (
@@ -95,6 +108,14 @@ export default function LoginPage() {
                                 </span>
                                 Sign in
                             </button>
+                            {auth.error ? (
+                                <div
+                                    className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                                    role="alert"
+                                >
+                                    <span className="font-medium">Login Failed!</span> {auth.error}
+                                </div>
+                            ) : null}
                         </div>
                     </form>
                 </div>
