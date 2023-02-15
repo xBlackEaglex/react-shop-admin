@@ -10,6 +10,7 @@ const nextConfig = {
             'i.imgur.com',
             'raw.githubusercontent.com',
             'm.media-amazon.com',
+            'cdn.shopify.com',
         ],
     },
 };
