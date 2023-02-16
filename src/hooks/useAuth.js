@@ -37,6 +37,13 @@ function useProviderAuth() {
         }
     };
 
+    const logout = () => {
+        Cookie.remove('token');
+        setUser(null);
+        delete axios.defaults.headers.Authorization;
+        window.location.href = '/login';
+    };
+
     const [error, setError] = useState();
 
     return {
@@ -44,5 +51,6 @@ function useProviderAuth() {
         error,
         setError,
         signIn,
+        logout,
     };
 }
